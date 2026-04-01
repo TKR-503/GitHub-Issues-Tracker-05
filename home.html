@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- tailwind and daisyui cdn links -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- font awesome cdn link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- font integration -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+    rel="stylesheet">
+
+
+  <!-- title and favicon -->
+  <title>GitHub Issues Tracker</title>
+  <link rel="shortcut icon" href="./assets/github-logo.png" type="image/x-icon">
+
+  <!-- link stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+
+</head>
+
+<body>
+
+</body>
+
+</html>
+
+<body class="bg-gray-100">
+
+  <!-- navbar -->
+  <div class="navbar bg-base-100 shadow-sm px-4">
+
+    <!-- Left section -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:gap-3 w-full sm:w-auto">
+
+      <div class="flex items-center gap-3">
+        <img class="w-10 h-10" src="./assets/github-logo.png" alt="GitHub Logo">
+        <h1 class="font-bold text-xl sm:text-2xl">GitHub Issues Tracker</h1>
+      </div>
+
+    </div>
+
+    <!-- Right section -->
+    <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto">
+      <input id="search" type="text" placeholder="Search issues..." onkeydown="if(event.key === 'Enter') searchIssues()"
+        class="focus:ring-2 focus:ring-blue-400 outline-none input input-bordered w-full sm:w-64 md:w-80" />
+      <button onclick="searchIssues()"
+        class="bg-indigo-600 text-white px-4 py-2 font-semibold rounded w-full sm:w-auto mt-2">+ New Search</button>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="w-full max-w-4xl mx-auto border border-gray-400 rounded-md p-1 bg-white mt-10 mb-3">
+
+    <div class="flex flex-wrap sm:flex-nowrap gap-2 p-2">
+
+      <!-- All Tab -->
+      <button id="allTab" onclick="setTab('all')"
+        class="tab flex-1 sm:flex-none px-4 sm:px-6 py-2 text-sm border border-gray-300 font-medium text-white bg-indigo-600 rounded-md">
+        All
+      </button>
+
+      <!-- Open Tab -->
+      <button id="openTab" onclick="setTab('open')"
+        class="tab flex-1 sm:flex-none px-4 sm:px-6 py-2 text-sm border border-gray-300 font-medium text-gray-600 hover:bg-gray-300 rounded-md">
+        Open
+      </button>
+
+      <!-- Closed Tab -->
+      <button id="closedTab" onclick="setTab('closed')"
+        class="tab flex-1 sm:flex-none px-4 sm:px-6 py-2 text-sm border border-gray-300 font-medium text-gray-600 hover:bg-gray-300 rounded-md">
+        Closed
+      </button>
+
+    </div>
+  </div>
+
+<div class="flex justify-between w-full max-w-4xl mx-auto border border-gray-400 rounded-md p-1 bg-white">
+
+    <div class="flex items-center gap-2 p-4">
+       <div >
+         <img class="w-10 h-10" src="./assets/Aperture.png" alt="">
+      </div>
+      <div>
+         <h1 class="font-bold text-xl">50 Issues</h1> 
+         <p class="text-gray-500">Track and manage your project issues</p>
+
+      </div>
+    </div>
+<div class=" my-auto mr-4">
+   <div class="flex gap-2 items-center">
+      <img class="w-2 h-2 rounded-full border-4 border-green-500 " src="./assets/Open-Status.png" alt="Open Status"><span>open</span>
+      <img class="w-2 h-2 rounded-full border-4 border-purple-500" src="./assets/Closed- Status .png" alt="Closed Status"><span>closed</span>
+   </div>
+</div>
+
+
+</div>
+
+
+
+
+  <!-- LOADER -->
+  <div id="loader" class="text-center hidden">
+
+    <span class="loading loading-spinner loading-xs"></span>
+    <span class="loading loading-spinner loading-sm"></span>
+    <span class="loading loading-spinner loading-md"></span>
+    <span class="loading loading-spinner loading-lg"></span>
+    <span class="loading loading-spinner loading-xl"></span>
+
+  </div>
+
+
+  <!-- Grid container for issues -->
+
+  <div id="issue-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4"></div>
+
+
+
+
+
+  <script src="./function/home.js"></script>
+
+
+</body>
+
+</html>
