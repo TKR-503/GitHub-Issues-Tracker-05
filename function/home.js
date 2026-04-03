@@ -1,8 +1,20 @@
 
+const loader = document.getElementById('loader');
+
+function showLoader() {
+  loader.classList.remove('hidden');
+}
+
+function hideLoader() {
+  loader.classList.add('hidden');
+}
+
+
 let issues = [];
 let current = 'all';
 
 const loadIssue = () => {
+  
   fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(res => res.json())
     .then(json => {
@@ -41,11 +53,7 @@ function render() {
   }
 
   displayIssue(filtered);
-}
-
-function setTab(tab) {
-  current = tab;
-  render();
+  hideLoader(); 
 }
 
 const loadModal = (id) => {
@@ -168,8 +176,6 @@ const displayIssue = (issues) => {
   });
 };
 
-
-
 const showModal = (issue) => {
 
   const content = document.getElementById("modal-content");
@@ -281,7 +287,7 @@ const searchIssues = () => {
 function setTab(tab) {
   current = tab;
 
-document.querySelectorAll('.tab').forEach(btn => {
+  document.querySelectorAll('.tab').forEach(btn => {
     btn.classList.remove('bg-indigo-600', 'text-white');
     btn.classList.add('text-gray-700');
   });
@@ -289,9 +295,11 @@ document.querySelectorAll('.tab').forEach(btn => {
   document.getElementById(tab + 'Tab')
     .classList.add('bg-indigo-600', 'text-white');
 
-  document.getElementById(tab + 'Tab')
-    .classList.remove('text-gray-700');
-    render();
+  showLoader();   
+
+  setTimeout(() => {
+    render();    
+  }, 200);
 }
 
 loadIssue();
