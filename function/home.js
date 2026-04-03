@@ -14,18 +14,24 @@ const loadIssue = () => {
 
 function render() {
   const container = document.getElementById('issue-container');
+  const title = document.getElementById('issueTitle');
+
   container.innerHTML = '';
 
   let filtered;
 
   if (current === 'all') {
     filtered = issues;
-  }
+    title.innerText = `${filtered.length} Issues`;
+  } 
   else {
     filtered = issues.filter(i => i.status === current);
+
+    title.innerText =
+      `${filtered.length} Issues`;
   }
 
-  if (!filtered.length) {
+  if (filtered.length === 0) {
     container.innerHTML = `
       <p class="col-span-full text-center text-gray-500">
         No Content Found
@@ -36,7 +42,6 @@ function render() {
 
   displayIssue(filtered);
 }
-
 
 function setTab(tab) {
   current = tab;
@@ -193,8 +198,7 @@ const showModal = (issue) => {
     }">
       ${issue.status.toUpperCase()}
     </p>
-   
-
+    
     <!-- Full Description (not sliced) -->
       <p class="text-gray-500 text-sm mb-5">
         ${issue.description}
@@ -236,8 +240,7 @@ const showModal = (issue) => {
     </p>
   </div>
 
-
- <div class="flex flex-col items-end">
+<div class="flex flex-col items-end">
 
   <span class="text-gray-500 text-sm mb-1 mr-3">
     Priority:
@@ -253,16 +256,15 @@ const showModal = (issue) => {
   `;
 };
 
-
 const searchIssues = () => {
-  const query = document.getElementById("searchInput").value.trim();
+  const searchQuery = document.getElementById("searchInput").value.trim();
 
-  if (!query) {
+  if (!searchQuery) {
     loadIssue(); // show all if empty
     return;
   }
 
-  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(query)}`)
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(searchQuery)}`)
     .then(res => res.json())
     .then(json => {
       const issues = json.data || [];
@@ -279,20 +281,17 @@ const searchIssues = () => {
 function setTab(tab) {
   current = tab;
 
-  // reset all tab styles
-  document.querySelectorAll('.tab').forEach(btn => {
+document.querySelectorAll('.tab').forEach(btn => {
     btn.classList.remove('bg-indigo-600', 'text-white');
     btn.classList.add('text-gray-700');
   });
 
-  // active tab style
   document.getElementById(tab + 'Tab')
     .classList.add('bg-indigo-600', 'text-white');
 
   document.getElementById(tab + 'Tab')
     .classList.remove('text-gray-700');
-
-  render(); // ✅ MUST CALL
+    render();
 }
 
 loadIssue();
