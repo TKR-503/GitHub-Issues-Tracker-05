@@ -17,7 +17,7 @@ const loadModal = (id) => {
     modal.close();
   }
 
-  modal.showModal(); // open immediately
+  modal.showModal();
 
   fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
     .then(res => res.json())
@@ -29,7 +29,7 @@ const loadModal = (id) => {
 
 const displayIssue = (issues) => {
   const issueContainer = document.getElementById('issue-container');
-  // issueContainer.innerHTML = "";
+  issueContainer.innerHTML = "";
 
   issues.forEach(issue => {
 
@@ -133,32 +133,81 @@ const showModal = (issue) => {
   const content = document.getElementById("modal-content");
   const date = new Date(issue.createdAt).toLocaleString();
 
+  // priority color logic
+  let priorityColor = "bg-gray-100 text-gray-500";
+  if (issue.priority === "high") {
+    priorityColor = "bg-red-100 text-red-500";
+  } else if (issue.priority === "medium") {
+    priorityColor = "bg-yellow-100 text-yellow-600";
+  } else {
+    priorityColor = "bg-purple-100 text-purple-500";
+  }
+
   content.innerHTML = `
-    <h3 class="text-xl font-bold mb-3">${issue.title}</h3>
+    
+    <div >
 
-    <p class="text-gray-500 mb-4">${issue.description}</p>
+      <!-- Header -->
+      <div class="flex justify-between items-start mb-4">
 
-    <div class="flex justify-between mb-4">
-      <span class="px-3 py-1 rounded-full bg-gray-100 text-sm">
-        ${issue.status.toUpperCase()}
-      </span>
+        <!-- Icon -->
+        <div class="flex items-center justify-center rounded-full">
+          <img src="./assets/${
+            issue.status === 'open'
+              ? 'Open-Status.png'
+              : 'Closed-Status.png'
+          }">
+        </div>
 
-      <span class="px-3 py-1 rounded-full bg-gray-100 text-sm">
-        ${issue.priority.toUpperCase()}
-      </span>
-    </div>
+        <!-- Priority -->
+        <div class="px-4 py-1 rounded-full ${priorityColor} font-semibold text-sm">
+          ${issue.priority.toUpperCase()}
+        </div>
 
-    <div class="text-sm text-gray-600 space-y-1">
-      <p><strong>Author:</strong> ${issue.author}</p>
-      <p><strong>Date:</strong> ${date}</p>
-    </div>
+      </div>
 
-    <div class="flex flex-wrap gap-2 mt-4">
-      ${issue.labels.map(label => `
-        <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">
-          ${label.toUpperCase()}
-        </span>
-      `).join("")}
+      <!-- Title -->
+      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-3">
+        ${issue.title}
+      </h3>
+
+      <!-- Full Description (not sliced) -->
+      <p class="text-gray-500 text-sm mb-5">
+        ${issue.description}
+      </p>
+
+      <!-- Labels -->
+      <div class="flex flex-wrap gap-2 mb-4">
+        ${issue.labels.map(label => {
+
+          let style = "bg-yellow-100 text-yellow-600";
+
+          if (label === "bug") {
+            style = "bg-red-100 text-red-600";
+          } 
+          else if (label === "help wanted") {
+            style = "bg-yellow-100 text-yellow-600";
+          } 
+          else if (label === "enhancement") {
+            style = "bg-green-100 text-green-600";
+          }
+
+          return `
+            <span class="px-3 py-1 text-sm rounded-full ${style}">
+              ${label.toUpperCase()}
+            </span>
+            
+          `;
+        }).join("")}
+      </div>
+
+      <!-- Footer -->
+      <div class="bg-gray-100 border-t p-5 text-lg">
+      <span class="text-gray-500">Assignee:</span> <br>
+        <p class="font-semibold  text-black rounded-lg"> ${issue.author.toUpperCase()}</p>
+        
+      </div>
+
     </div>
   `;
 };
