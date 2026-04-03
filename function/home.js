@@ -1,11 +1,47 @@
-const loadIssue = (status = "all") => {
+
+let issues = [];
+let current = 'all';
+
+const loadIssue = () => {
   fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(res => res.json())
-    .then((json) => {
-      let issues = json.data;
-     displayIssue(issues);
+    .then(json => {
+      issues = json.data;
+      render();
     });
 };
+
+
+function render() {
+  const container = document.getElementById('issue-container');
+  container.innerHTML = '';
+
+  let filtered;
+
+  if (current === 'all') {
+    filtered = issues;
+  }
+  else {
+    filtered = issues.filter(i => i.status === current);
+  }
+
+  if (!filtered.length) {
+    container.innerHTML = `
+      <p class="col-span-full text-center text-gray-500">
+        No Content Found
+      </p>
+    `;
+    return;
+  }
+
+  displayIssue(filtered);
+}
+
+
+function setTab(tab) {
+  current = tab;
+  render();
+}
 
 const loadModal = (id) => {
   const modal = document.getElementById("my_modal_5");
@@ -34,7 +70,7 @@ const displayIssue = (issues) => {
   issues.forEach(issue => {
 
     const card = document.createElement("div");
-   let priorityColor = "bg-red-400 text-gray-500";
+    let priorityColor = "bg-red-400 text-gray-500";
     if (issue.priority === "high") {
       priorityColor = "bg-red-100 text-red-500";
     } else if (issue.priority === "medium") {
@@ -44,10 +80,10 @@ const displayIssue = (issues) => {
     }
 
     // Format date
-    
+
     const date = new Date(issue.createdAt).toLocaleDateString();
-   
-card.className = ` 
+
+    card.className = ` 
   bg-white p-4 sm:p-5 rounded-xl shadow 
   border-t-4 
   ${issue.status === 'open' ? 'border-green-500' : 'border-purple-500'}
@@ -59,7 +95,7 @@ card.className = `
   
   w-full
 `;
-card.innerHTML = `
+    card.innerHTML = `
   <div class="">
 
     <!-- Header -->
@@ -67,11 +103,10 @@ card.innerHTML = `
       
       <!-- Icon -->
       <div class="flex items-center justify-center rounded-full">
-        <img class="pointer-events-none" src="./assets/${
-          (issue.status === 'open')
-            ? 'Open-Status.png'
-            : 'Closed-Status.png'
-        }">
+        <img class="pointer-events-none" src="./assets/${(issue.status === 'open')
+        ? 'Open-Status.png'
+        : 'Closed-Status.png'
+      }">
       </div>
 
       <!-- Priority -->
@@ -98,10 +133,10 @@ card.innerHTML = `
 
         if (label === "bug") {
           style = "bg-red-100 text-red-600";
-        } 
+        }
         else if (label === "help wanted") {
           style = "bg-yellow-100 text-yellow-600";
-        } 
+        }
         else if (label === "enhancement") {
           style = "bg-green-100 text-green-600";
         }
@@ -122,8 +157,8 @@ card.innerHTML = `
 
   </div>
 `;
-card.style.cursor = "pointer";
- card.addEventListener("click", () => loadModal(issue.id));
+    card.style.cursor = "pointer";
+    card.addEventListener("click", () => loadModal(issue.id));
     issueContainer.appendChild(card);
   });
 };
@@ -152,11 +187,9 @@ const showModal = (issue) => {
         ${issue.title}
       </h1>
     
-
-    <p class="inline-block mt-1 mb-3 px-3 py-1 text-sm font-medium rounded-full border ${
-      issue.status === "open"
-        ? "text-white border bg-green-500"
-        : "text-white border bg-purple-500"
+<p class="inline-block mt-1 mb-3 px-3 py-1 text-sm font-medium rounded-full border ${issue.status === "open"
+      ? "text-white border bg-green-500"
+      : "text-white border bg-purple-500"
     }">
       ${issue.status.toUpperCase()}
     </p>
@@ -171,25 +204,25 @@ const showModal = (issue) => {
       <div class="flex flex-wrap gap-2 mb-4">
         ${issue.labels.map(label => {
 
-          let style = "bg-yellow-100 text-yellow-600";
+      let style = "bg-yellow-100 text-yellow-600";
 
-          if (label === "bug") {
-            style = "bg-red-100 text-red-600";
-          } 
-          else if (label === "help wanted") {
-            style = "bg-yellow-100 text-yellow-600";
-          } 
-          else if (label === "enhancement") {
-            style = "bg-green-100 text-green-600";
-          }
+      if (label === "bug") {
+        style = "bg-red-100 text-red-600";
+      }
+      else if (label === "help wanted") {
+        style = "bg-yellow-100 text-yellow-600";
+      }
+      else if (label === "enhancement") {
+        style = "bg-green-100 text-green-600";
+      }
 
-          return `
+      return `
             <span class="px-3 py-1 text-sm rounded-full ${style}">
               ${label.toUpperCase()}
             </span>
             
           `;
-        }).join("")}
+    }).join("")}
       </div>
 
       <!-- Footer -->
@@ -217,8 +250,6 @@ const showModal = (issue) => {
 </div>
 
 </div>
-  
-    
   `;
 };
 
@@ -248,14 +279,20 @@ const searchIssues = () => {
 function setTab(tab) {
   current = tab;
 
-  document.querySelectorAll('.tab').forEach(t =>
-    t.classList.remove('bg-indigo-600', 'text-white')
-  );
+  // reset all tab styles
+  document.querySelectorAll('.tab').forEach(btn => {
+    btn.classList.remove('bg-indigo-600', 'text-white');
+    btn.classList.add('text-gray-700');
+  });
 
+  // active tab style
   document.getElementById(tab + 'Tab')
     .classList.add('bg-indigo-600', 'text-white');
 
-  loadIssue(tab); 
+  document.getElementById(tab + 'Tab')
+    .classList.remove('text-gray-700');
+
+  render(); // ✅ MUST CALL
 }
 
 loadIssue();
