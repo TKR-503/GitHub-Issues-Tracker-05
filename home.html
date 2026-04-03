@@ -31,12 +31,6 @@
 
 </head>
 
-<body>
-
-</body>
-
-</html>
-
 <body class="bg-gray-100">
 
   <!-- navbar -->
@@ -54,10 +48,10 @@
 
     <!-- Right section -->
     <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto">
-      <input id="search" type="text" placeholder="Search issues..." onkeydown="if(event.key === 'Enter') searchIssues()"
+      <input id="searchInput" type="text" placeholder="Search issues..." onkeydown="if(event.key === 'Enter') searchIssues()"
         class="focus:ring-2 focus:ring-blue-400 outline-none input input-bordered w-full sm:w-64 md:w-80" />
       <button onclick="searchIssues()"
-        class="bg-indigo-600 text-white px-4 py-2 font-semibold rounded w-full sm:w-auto mt-2">+ New Search</button>
+        class="bg-indigo-600 text-white hover:bg-blue-400 cursor-pointer px-4 py-2 font-semibold rounded w-full sm:w-auto mt-2">+ New Search</button>
     </div>
   </div>
 
@@ -105,14 +99,10 @@
       <img class="w-2 h-2 rounded-full border-4 border-purple-500" src="./assets/Closed- Status .png" alt="Closed Status"><span>closed</span>
    </div>
 </div>
-
-
 </div>
 
 
-
-
-  <!-- LOADER -->
+<!-- LOADER -->
   <div id="loader" class="text-center hidden">
 
     <span class="loading loading-spinner loading-xs"></span>
@@ -145,11 +135,7 @@
 
   <div id="issue-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4"></div>
 
-
-
-
-
-  <script src="./function/home.js"></script>
+ <script src="./function/home.js"></script>
 
 
 </body>

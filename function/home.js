@@ -221,6 +221,28 @@ const showModal = (issue) => {
     
   `;
 };
+
+
+const searchIssues = () => {
+  const query = document.getElementById("searchInput").value.trim();
+
+  if (!query) {
+    loadIssue(); // show all if empty
+    return;
+  }
+
+  fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${encodeURIComponent(query)}`)
+    .then(res => res.json())
+    .then(json => {
+      const issues = json.data || [];
+      displayIssue(issues);
+    })
+    .catch(() => {
+      document.getElementById("issue-container").innerHTML =
+        "<p class='text-red-500'>Search failed</p>";
+    });
+};
+
 //  Tab switching
 
 function setTab(tab) {
