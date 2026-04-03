@@ -274,11 +274,29 @@ const searchIssues = () => {
     .then(res => res.json())
     .then(json => {
       const issues = json.data || [];
+
+      const container = document.getElementById("issue-container");
+
+      if (issues.length === 0) {
+     container.innerHTML = `
+ <div class="flex justify-center items-center w-full border border-gray-300 rounded-lg p-6 bg-white text-center shadow-sm lg:ml-96">
+      
+      <p class="text-gray-500">
+        No Content Found In Your Search For 
+        "<span class="text-gray-800 font-semibold">${searchQuery}</span>"
+      </p>
+
+    </div>
+
+`;
+        return;
+      }
+
       displayIssue(issues);
     })
     .catch(() => {
       document.getElementById("issue-container").innerHTML =
-        "<p class='text-red-500'>Search failed</p>";
+        `<p class='text-red-500'>Search failed</p>`;
     });
 };
 
