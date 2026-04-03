@@ -128,6 +128,8 @@ card.style.cursor = "pointer";
   });
 };
 
+
+
 const showModal = (issue) => {
 
   const content = document.getElementById("modal-content");
@@ -136,42 +138,31 @@ const showModal = (issue) => {
   // priority color logic
   let priorityColor = "bg-gray-100 text-gray-500";
   if (issue.priority === "high") {
-    priorityColor = "bg-red-100 text-red-500";
+    priorityColor = "bg-red-200 text-red-500";
   } else if (issue.priority === "medium") {
-    priorityColor = "bg-yellow-100 text-yellow-600";
+    priorityColor = "bg-yellow-200 text-yellow-600";
   } else {
-    priorityColor = "bg-purple-100 text-purple-500";
+    priorityColor = "bg-purple-200 text-purple-500";
   }
 
   content.innerHTML = `
-    
-    <div >
-
-      <!-- Header -->
-      <div class="flex justify-between items-start mb-4">
-
-        <!-- Icon -->
-        <div class="flex items-center justify-center rounded-full">
-          <img src="./assets/${
-            issue.status === 'open'
-              ? 'Open-Status.png'
-              : 'Closed-Status.png'
-          }">
-        </div>
-
-        <!-- Priority -->
-        <div class="px-4 py-1 rounded-full ${priorityColor} font-semibold text-sm">
-          ${issue.priority.toUpperCase()}
-        </div>
-
-      </div>
-
-      <!-- Title -->
-      <h3 class="text-lg font-bold text-gray-800 mb-2 mt-3">
+      
+    <!-- Title -->
+      <h1 class="text-xl font-bold text-gray-800 mb-2 mt-3">
         ${issue.title}
-      </h3>
+      </h1>
+    
 
-      <!-- Full Description (not sliced) -->
+    <p class="inline-block mt-1 mb-3 px-3 py-1 text-sm font-medium rounded-full border ${
+      issue.status === "open"
+        ? "text-white border bg-green-500"
+        : "text-white border bg-purple-500"
+    }">
+      ${issue.status.toUpperCase()}
+    </p>
+   
+
+    <!-- Full Description (not sliced) -->
       <p class="text-gray-500 text-sm mb-5">
         ${issue.description}
       </p>
@@ -202,13 +193,32 @@ const showModal = (issue) => {
       </div>
 
       <!-- Footer -->
-      <div class="bg-gray-100 border-t p-5 text-lg">
-      <span class="text-gray-500">Assignee:</span> <br>
-        <p class="font-semibold  text-black rounded-lg"> ${issue.author.toUpperCase()}</p>
-        
-      </div>
 
-    </div>
+     <div class="bg-gray-100  p-5 text-lg flex justify-between items-center gap-4">
+  
+ <div>
+    <span class="text-gray-500 text-sm">Assignee:</span>
+    <p class="font-semibold text-black">
+      ${issue.author.toUpperCase()}
+    </p>
+  </div>
+
+
+ <div class="flex flex-col items-end">
+
+  <span class="text-gray-500 text-sm mb-1 mr-3">
+    Priority:
+  </span>
+
+  <div class="px-4 py-1 rounded-full ${priorityColor} font-semibold text-sm">
+    ${issue.priority.toUpperCase()}
+  </div>
+
+</div>
+
+</div>
+  
+    
   `;
 };
 //  Tab switching
